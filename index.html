@@ -488,6 +488,175 @@
       vertical-align: middle;
       font-family: 'Cinzel Decorative', serif;
     }
+
+    /* history badge for cursed */
+    .history-cursed-badge {
+      display: inline-block;
+      background: rgba(224,92,92,0.15);
+      border: 1px solid rgba(224,92,92,0.35);
+      color: #e05c5c;
+      font-size: 10px;
+      border-radius: 4px;
+      padding: 1px 6px;
+      margin-left: 6px;
+      vertical-align: middle;
+      font-family: 'Cinzel Decorative', serif;
+    }
+
+    /* ===== CURSED OVERLAY ===== */
+    #cursed-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.0);
+      transition: background 0.8s ease;
+    }
+    #cursed-overlay.active {
+      display: flex;
+      background: rgba(20,0,0,0.92);
+    }
+
+    #cursed-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .cursed-box {
+      position: relative;
+      z-index: 1001;
+      text-align: center;
+      padding: 3rem 2.5rem;
+      max-width: 480px;
+      width: 90%;
+      background: linear-gradient(160deg, #1a0808 0%, #0e0404 100%);
+      border: 1px solid rgba(224,92,92,0.4);
+      border-radius: 20px;
+      box-shadow: 0 0 80px rgba(224,92,92,0.12), inset 0 0 60px rgba(224,92,92,0.04);
+      animation: cursed-appear 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+
+    @keyframes cursed-appear {
+      from { opacity: 0; transform: scale(1.15) rotate(2deg); }
+      to   { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+
+    .cursed-sigil {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 1.25rem;
+      animation: cursed-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes cursed-pulse {
+      0%, 100% { transform: scale(1);    opacity: 0.9; }
+      50%       { transform: scale(1.06); opacity: 1;   }
+    }
+
+    .cursed-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(20px, 5vw, 26px);
+      font-weight: 900;
+      color: #e05c5c;
+      letter-spacing: 0.06em;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 30px rgba(224,92,92,0.5);
+      animation: cursed-flicker 4s ease-in-out infinite;
+    }
+
+    @keyframes cursed-flicker {
+      0%,100% { opacity: 1; }
+      80%     { opacity: 1; }
+      82%     { opacity: 0.4; }
+      83%     { opacity: 1; }
+      85%     { opacity: 0.6; }
+      86%     { opacity: 1; }
+    }
+
+    .cursed-latin {
+      font-size: 13px;
+      color: rgba(224,92,92,0.7);
+      font-style: italic;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+
+    .cursed-sin-display {
+      margin-bottom: 1.5rem;
+    }
+
+    .cursed-big-icon {
+      font-size: 52px;
+      line-height: 1;
+      display: block;
+      margin-bottom: 8px;
+      animation: icon-shake 0.4s ease-in-out infinite;
+    }
+
+    @keyframes icon-shake {
+      0%,100% { transform: rotate(0deg); }
+      25%     { transform: rotate(-4deg); }
+      75%     { transform: rotate(4deg); }
+    }
+
+    .cursed-sin-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 18px;
+      font-weight: 900;
+      color: #e05c5c;
+      letter-spacing: 0.05em;
+    }
+
+    .cursed-sin-en {
+      font-size: 12px;
+      color: rgba(224,92,92,0.6);
+      font-style: italic;
+      letter-spacing: 0.1em;
+      margin-top: 4px;
+    }
+
+    .cursed-count {
+      font-size: 13px;
+      color: rgba(224,92,92,0.5);
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    .cursed-msg {
+      font-size: 15px;
+      color: rgba(224,92,92,0.7);
+      font-style: italic;
+      line-height: 1.75;
+      margin-bottom: 2rem;
+      border-top: 1px solid rgba(224,92,92,0.15);
+      padding-top: 1.25rem;
+    }
+
+    .cursed-close {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 10px 28px;
+      border: 1px solid rgba(224,92,92,0.35);
+      background: transparent;
+      color: #e05c5c;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      transition: background 0.15s;
+    }
+    .cursed-close:hover { background: rgba(224,92,92,0.1); }
+
+    /* result cards cursed glow */
+    .sin-card.cursed-glow {
+      border-color: rgba(224,92,92,0.4);
+      box-shadow: 0 0 18px rgba(224,92,92,0.12);
+    }
   </style>
 </head>
 <body>
@@ -561,6 +730,33 @@
   </div>
 </div>
 
+<!-- CURSED OVERLAY -->
+<canvas id="cursed-canvas"></canvas>
+<div id="cursed-overlay">
+  <div class="cursed-box">
+    <svg class="cursed-sigil" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="40" r="36" fill="none" stroke="#e05c5c" stroke-width="0.8" opacity="0.3"/>
+      <line x1="40" y1="4"  x2="40" y2="76" stroke="#e05c5c" stroke-width="0.6" opacity="0.3"/>
+      <line x1="4"  y1="40" x2="76" y2="40" stroke="#e05c5c" stroke-width="0.6" opacity="0.3"/>
+      <line x1="12" y1="12" x2="68" y2="68" stroke="#e05c5c" stroke-width="0.6" opacity="0.3"/>
+      <line x1="68" y1="12" x2="12" y2="68" stroke="#e05c5c" stroke-width="0.6" opacity="0.3"/>
+      <circle cx="40" cy="40" r="18" fill="none" stroke="#e05c5c" stroke-width="1" opacity="0.5"/>
+      <polygon points="40,22 44,34 57,34 47,42 51,55 40,47 29,55 33,42 23,34 36,34" fill="none" stroke="#e05c5c" stroke-width="1" opacity="0.7"/>
+      <circle cx="40" cy="40" r="4" fill="#e05c5c" opacity="0.6"/>
+    </svg>
+    <div class="cursed-title">呪縛</div>
+    <div class="cursed-latin">Maledicta — Cursed Beyond Reason</div>
+    <div class="cursed-sin-display">
+      <span class="cursed-big-icon" id="cursed-icon"></span>
+      <div class="cursed-sin-name" id="cursed-sin-name"></div>
+      <div class="cursed-sin-en" id="cursed-sin-en"></div>
+      <div class="cursed-count">× 7</div>
+    </div>
+    <div class="cursed-msg" id="cursed-msg"></div>
+    <button class="cursed-close" onclick="closeCursed()">受け入れる</button>
+  </div>
+</div>
+
 <script>
 const SINS = [
   { id: 'pride',    ja: '傲慢', en: 'Superbia',  icon: '👑', desc: '慢心・自己過信' },
@@ -593,6 +789,11 @@ function isComplete(drawn) {
   return ids.size === 7;
 }
 
+function isCursed(drawn) {
+  const ids = new Set(drawn.map(s => s.id));
+  return ids.size === 1;
+}
+
 function doGacha() {
   const btn = document.getElementById('btn-gacha');
   btn.classList.add('spinning');
@@ -609,11 +810,13 @@ function doGacha() {
     });
 
     const complete = isComplete(drawn);
+    const cursed  = !complete && isCursed(drawn);
     totalCount++;
     history.unshift({
       sins: drawn.map(s => s.id),
       ts: new Date().toLocaleTimeString('ja-JP', {hour:'2-digit', minute:'2-digit'}),
-      complete
+      complete,
+      cursed
     });
     if (history.length > 10) history = history.slice(0, 10);
 
@@ -626,25 +829,27 @@ function doGacha() {
     document.getElementById('spin-overlay').classList.remove('active');
     btn.classList.remove('spinning');
 
-    renderResult(drawn, counts, complete);
+    renderResult(drawn, counts, complete, cursed);
     updateInfoBar();
     renderStats();
     renderHistory();
 
     if (complete) {
-      // 少し遅らせてカード演出の後にオーバーレイ表示
       setTimeout(() => showJackpot(drawn), 900);
+    } else if (cursed) {
+      setTimeout(() => showCursed(drawn[0]), 900);
     }
   }, 900);
 }
 
-function renderResult(drawn, counts, complete) {
+function renderResult(drawn, counts, complete, cursed) {
   const grid = document.getElementById('result-grid');
   grid.innerHTML = '';
+  const extraClass = complete ? ' jackpot-glow' : cursed ? ' cursed-glow' : '';
   drawn.forEach((sin, i) => {
     const c = counts[sin.id];
     const card = document.createElement('div');
-    card.className = 'sin-card' + (complete ? ' jackpot-glow' : '');
+    card.className = 'sin-card' + extraClass;
     card.innerHTML = `
       <span class="sin-icon">${sin.icon}</span>
       <div class="sin-name">${sin.en}</div>
@@ -684,7 +889,10 @@ function renderHistory() {
       return `<span class="history-tag">${s.icon} ${s.ja}</span>`;
     }).join('');
     const badge = item.complete
-      ? `<span class="history-complete-badge">★ 大当たり</span>` : '';
+      ? `<span class="history-complete-badge">★ 大当たり</span>`
+      : item.cursed
+        ? `<span class="history-cursed-badge">💀 呪縛</span>`
+        : '';
     return `<div class="history-item">
       <div class="history-sins">${tags}${badge}</div>
       <span class="history-num">#${totalCount - idx} · ${item.ts}</span>
@@ -799,6 +1007,95 @@ window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 });
+
+/* ===== CURSED OVERLAY ===== */
+const CURSED_MSGS = {
+  pride:    '傲慢に染まり、他者が見えなくなった。\n鏡の中にしか世界はない。',
+  greed:    '強欲が魂を喰らい尽くした。\n手に入れても、まだ足りない。',
+  lust:     '色欲の渦に飲み込まれた。\n欲望の炎は消えることがない。',
+  envy:     '嫉妬が心を腐らせた。\n他者の幸福が毒となる。',
+  gluttony: '暴食が身を滅ぼす。\n満たされることのない空腹。',
+  wrath:    '憤怒に支配された。\n怒りの火は自らをも焼く。',
+  sloth:    '怠惰の沼に沈んでいく。\n抗う意志すら失われた。',
+};
+
+let cursedAF = null;
+
+function showCursed(sin) {
+  document.getElementById('cursed-icon').textContent    = sin.icon;
+  document.getElementById('cursed-sin-name').textContent = sin.ja;
+  document.getElementById('cursed-sin-en').textContent  = sin.en;
+  document.getElementById('cursed-msg').innerHTML =
+    (CURSED_MSGS[sin.id] || 'あなたは一つの罪に囚われた。').replace('\n', '<br>');
+
+  const overlay = document.getElementById('cursed-overlay');
+  overlay.style.display = 'flex';
+  requestAnimationFrame(() => {
+    overlay.style.background = 'rgba(20,0,0,0.92)';
+    overlay.classList.add('active');
+  });
+  startCursedParticles(sin);
+}
+
+function closeCursed() {
+  const overlay = document.getElementById('cursed-overlay');
+  overlay.classList.remove('active');
+  overlay.style.background = 'rgba(0,0,0,0)';
+  setTimeout(() => { overlay.style.display = 'none'; }, 600);
+  stopCursedParticles();
+}
+
+document.getElementById('cursed-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeCursed();
+});
+
+function startCursedParticles(sin) {
+  const canvas = document.getElementById('cursed-canvas');
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+
+  const particles = Array.from({length: 60}, () => ({
+    x: Math.random() * canvas.width,
+    y: canvas.height + Math.random() * 40,
+    r: 1.5 + Math.random() * 3,
+    vx: (Math.random() - 0.5) * 0.8,
+    vy: -(0.6 + Math.random() * 1.4),
+    op: 0.4 + Math.random() * 0.5,
+    wobble: Math.random() * Math.PI * 2,
+    wobbleSpeed: 0.02 + Math.random() * 0.03,
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.wobble += p.wobbleSpeed;
+      p.x += p.vx + Math.sin(p.wobble) * 0.4;
+      p.y += p.vy;
+      p.op -= 0.0015;
+      if (p.y < -10 || p.op <= 0) {
+        p.x  = Math.random() * canvas.width;
+        p.y  = canvas.height + 10;
+        p.op = 0.4 + Math.random() * 0.5;
+      }
+      ctx.save();
+      ctx.globalAlpha = p.op;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = '#e05c5c';
+      ctx.fill();
+      ctx.restore();
+    });
+    cursedAF = requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function stopCursedParticles() {
+  if (cursedAF) { cancelAnimationFrame(cursedAF); cursedAF = null; }
+  const canvas = document.getElementById('cursed-canvas');
+  canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+}
 </script>
 </body>
 </html>
